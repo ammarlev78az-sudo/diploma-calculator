@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة تنسيق الدبلومات الفنية</title>
+    <style>
+        body { font-family: Tahoma, sans-serif; background-color: #f4f6f9; padding: 20px; text-align: center; }
+        .card { background: white; max-width: 500px; margin: 0 auto; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h2 { color: #0056b3; }
+        input, button { width: 90%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #ccc; font-size: 16px; }
+        button { background-color: #28a745; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #218838; }
+        ul { list-style: none; padding: 0; text-align: right; }
+        li { background: #e9ecef; margin: 8px 0; padding: 12px; border-radius: 6px; display: flex; justify-content: space-between; font-size: 15px; }
+        .score { font-weight: bold; color: #d9534f; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>🎯 حاسبة تنسيق دبلوم صنايع 3 سنوات</h2>
+    <p>أدخل مجموعك المئوي لمعرفة المعاهد المتاحة لك:</p>
+    <input type="number" id="percentage" placeholder="أدخل النسبة المئوية (مثال: 79)" min="50" max="100">
+    <button onclick="calculateTansiq()">عرض المعاهد المتاحة</button>
+
+    <ul id="results"></ul>
+</div>
+
+<script>
+    const institutes = [
+        { name: "المعهد الفني الصناعي بالزقازيق", minScore: 73.0 },
+        { name: "المعهد الفني الصناعي ببورسعيد", minScore: 74.4 },
+        { name: "المعهد الفني الصناعي بالسويس", minScore: 74.1 },
+        { name: "المعهد الفني الصناعي ببنها", minScore: 75.8 },
+        { name: "المعهد الفني الصناعي بشبرا", minScore: 76.2 },
+        { name: "المعهد الفني الصناعي بقويسنا", minScore: 74.8 },
+        { name: "المعهد الفني لمواد البناء بالمطرية", minScore: 73.5 },
+        { name: "المعهد الفني للصناعات المتطورة بالسلام", minScore: 77.0 },
+        { name: "المعهد العالي للتكنولوجيا ببلبيس", minScore: 68.0 },
+        { name: "المعهد العالي للهندسة والتكنولوجيا بالعبور", minScore: 78.5 }
+    ];
+
+    function calculateTansiq() {
+        const score = parseFloat(document.getElementById('percentage').value);
+        const resultsList = document.getElementById('results');
+        resultsList.innerHTML = "";
+
+        if (isNaN(score) || score < 50 || score > 100) {
+            alert("برجاء أدخل نسبة مئوية صحيحة بين 50 و 100");
+            return;
+        }
+
+        const available = institutes.filter(inst => score >= inst.minScore);
+
+        if (available.length === 0) {
+            resultsList.innerHTML = "<li>للأسف المجموع أقل من الحدود الدنيا للمعاهد المسجلة.</li>";
+        } else {
+            available.forEach(inst => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span>${inst.name}</span> <span class="score">حد أدنى: ${inst.minScore}%</span>`;
+                resultsList.appendChild(li);
+            });
+        }
+    }
+</script>
+
+</body>
+</html>
